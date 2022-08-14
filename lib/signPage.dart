@@ -47,7 +47,7 @@ class _SignPage extends State<SignPage> {
                   maxLines: 1,
                   decoration: InputDecoration(
                       hintText: '4자 이상 입력해주세요',
-                      labelText: '아이디', border: OutlineInputBorder()),
+                      labelText: 'ID', border: OutlineInputBorder()),
                 ),
               ),
               SizedBox(
@@ -61,7 +61,7 @@ class _SignPage extends State<SignPage> {
                   maxLines: 1,
                   decoration: InputDecoration(
                       hintText: '6자 이상 입력해주세요',
-                      labelText: '비밀번호', border: OutlineInputBorder()),
+                      labelText: 'Password', border: OutlineInputBorder()),
                 ),
               ),
               SizedBox(
@@ -74,7 +74,7 @@ class _SignPage extends State<SignPage> {
                   obscureText: true,
                   maxLines: 1,
                   decoration: InputDecoration(
-                      labelText: '비밀번호확인', border: OutlineInputBorder()),
+                      labelText: 'PasswordCheck', border: OutlineInputBorder()),
                 ),
               ),
               SizedBox(

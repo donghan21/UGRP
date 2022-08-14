@@ -83,7 +83,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                       controller: _idTextController,
                       maxLines: 1,
                       decoration: InputDecoration(
-                          labelText: 'Username', border: OutlineInputBorder()),
+                          labelText: 'ID', border: OutlineInputBorder()),
                     ),
                   ),
                   SizedBox(
