@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 import 'package:ugrp/signPage.dart';
 import 'secondPage.dart';
+import 'thirdPage.dart';
 //import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => LoginPage(),
         '/sign': (context) => SignPage(),
         '/second': (context) => SecondPage(),
+        '/third': (context) => ThirdPage(),
       },
     );
   }
