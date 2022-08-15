@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ugrp/login.dart';
 import 'package:flutter/services.dart';
+import 'package:ugrp/seventhPage.dart';
+import 'sixthPage.dart';
 
 class SecondPage extends StatefulWidget {
   @override
@@ -8,12 +10,17 @@ class SecondPage extends StatefulWidget {
 }
 
 class _SecondPageState extends State<SecondPage> {
-  int time = 0;
-  int kcal = 0;
+  int lasttime = 0;
+  int lastkcal = 0;
 
   @override
   Widget build(BuildContext context) {
+
     final String id = ModalRoute.of(context)!.settings.arguments.toString();
+    //final inforlast = ModalRoute.of(context)!.settings.arguments as Information;
+    lasttime += information.mytime!;
+    lastkcal += information.mykcal!;
+
     return Scaffold(
         body: Container(
             child: Column(children: <Widget>[
@@ -87,7 +94,7 @@ class _SecondPageState extends State<SecondPage> {
             height: 30,
             child: Center(
                 child: Text(
-              '$time' + '분',
+              '$lasttime' + '분',
               style: TextStyle(fontSize: 15, color: Colors.black),
             )),
             color: Colors.grey),
@@ -96,7 +103,7 @@ class _SecondPageState extends State<SecondPage> {
             height: 30,
             child: Center(
                 child: Text(
-              '$kcal' + 'kcal',
+              '$lastkcal' + 'kcal',
               style: TextStyle(fontSize: 15, color: Colors.black),
             )),
             color: Colors.grey)
@@ -112,3 +119,4 @@ class _SecondPageState extends State<SecondPage> {
     ])));
   }
 }
+

@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ugrp/data/user.dart';
+import 'seventhPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -46,14 +47,15 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     reference = _database!.reference().child('user');
   }
 
-  // @override
-  // void dispose() {
-  //   _animationController!.dispose();
-  //   super.dispose();
-  //}
+  @override
+  void dispose() {
+    // _animationController!.dispose();
+     super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: ListView(children: <Widget>[
       Container(
