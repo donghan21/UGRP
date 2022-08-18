@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ugrp/data/user.dart';
+import 'main.dart';
 
 class SignPage extends StatefulWidget {
   @override
@@ -41,7 +43,7 @@ class _SignPage extends State<SignPage> {
           child: Column(
             children: <Widget>[
               SizedBox(
-                width: 200,
+                width: 200.w,
                 child: TextField(
                   controller: _idTextController,
                   maxLines: 1,
@@ -51,10 +53,10 @@ class _SignPage extends State<SignPage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
               SizedBox(
-                width: 200,
+                width: 200.w,
                 child: TextField(
                   controller: _pwTextController,
                   obscureText: true,
@@ -65,10 +67,10 @@ class _SignPage extends State<SignPage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
               SizedBox(
-                width: 200,
+                width: 200.w,
                 child: TextField(
                   controller: _pwCheckTextController,
                   obscureText: true,
@@ -78,7 +80,7 @@ class _SignPage extends State<SignPage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
               FlatButton(
                 onPressed: () {
@@ -108,7 +110,7 @@ class _SignPage extends State<SignPage> {
                 },
                 child: Text(
                   '회원 가입',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 15.sp),
                 ),
                 color: Colors.blueAccent,
               )

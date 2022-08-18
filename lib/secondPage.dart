@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ugrp/login.dart';
 import 'package:flutter/services.dart';
 import 'package:ugrp/seventhPage.dart';
 import 'sixthPage.dart';
+import 'main.dart';
 
 class SecondPage extends StatefulWidget {
   @override
@@ -27,7 +29,7 @@ class _SecondPageState extends State<SecondPage> {
       Padding(padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0)),
       Row(children: <Widget>[
         SizedBox(
-            width: 70,
+            width: 70.w,
             child: IconButton(
                 icon: Icon(Icons.arrow_back_ios_rounded, size: 33),
                 onPressed: (() {
@@ -52,7 +54,7 @@ class _SecondPageState extends State<SecondPage> {
                             ]);
                       });
                 }))),
-        SizedBox(width: 250),
+        SizedBox(width: 250.w),
         SizedBox(
           child: IconButton(
               icon: Icon(Icons.exit_to_app, size: 35),
@@ -83,39 +85,39 @@ class _SecondPageState extends State<SecondPage> {
       ]),
       Padding(padding: EdgeInsets.only(top: 20.0)),
       SizedBox(
-          width: 300,
-          height: 40,
+          width: 300.w,
+          height: 40.h,
           child: Text('오늘 나의 운동량',
               textAlign: TextAlign.start,
-              style: TextStyle(fontSize: 23, fontWeight: FontWeight.w200))),
+              style: TextStyle(fontSize: 23.sp, fontWeight: FontWeight.w200))),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
-            width: 150,
-            height: 30,
+            width: 150.w,
+            height: 30.h,
             child: Center(
                 child: Text(
               '$lasttime' + '분',
-              style: TextStyle(fontSize: 15, color: Colors.black),
+              style: TextStyle(fontSize: 15.sp, color: Colors.black),
             )),
             color: Colors.grey),
         Container(
-            width: 150,
-            height: 30,
+            width: 150.w,
+            height: 30.h,
             child: Center(
                 child: Text(
               '$lastkcal' + 'kcal',
-              style: TextStyle(fontSize: 15, color: Colors.black),
+              style: TextStyle(fontSize: 15.sp, color: Colors.black),
             )),
             color: Colors.grey)
       ]),
-      SizedBox(height: 50),
+      SizedBox(height: 50.h),
       SizedBox(
-        height: 50, width: 300,
-        child: Text('이번달 나의 운동량', style: TextStyle(fontSize: 23)
+        height: 50.h, width: 300.w,
+        child: Text('이번달 나의 운동량', style: TextStyle(fontSize: 23.sp)
         )),
-      SizedBox(height: 300, width: 300, child: Center(child: Text('달력')),),
-      SizedBox(height: 50),
-      SizedBox(width: 300, child: ElevatedButton(child: Text('운동 시작하기'), onPressed: () {Navigator.of(context).pushNamed('/third');},))
+      SizedBox(height: 300.h, width: 300.w, child: Center(child: Text('달력')),),
+      SizedBox(height: 50.h),
+      SizedBox(width: 300.w, child: ElevatedButton(child: Text('운동 시작하기'), onPressed: () {Navigator.of(context).pushNamed('/third');},))
     ])));
   }
 }
