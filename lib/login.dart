@@ -56,11 +56,6 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = MediaQuery.of(context).size.width;
-    final deviceHeight = MediaQuery.of(context).size.height;
-    final statusBar = MediaQuery.of(context).padding.top;
-    print('width : $deviceWidth');
-    print('height : $deviceHeight');
     return SafeArea(
       child: Scaffold(
           body: ListView(children: <Widget>[
@@ -75,21 +70,16 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                   style: TextStyle(fontSize: 30.sp),
                 ),
               ),
-              Container(
-                height: 200.h,
-                width: 250.w,
-                color: Colors.amber,
-                child: Text('로그인은 하기 쉬우면 하고 일단 보류',
-                    style: TextStyle(fontSize: 15.sp)),
-              ),
-              SizedBox(height: 25.h),
+
+              SizedBox(height: 100.h),
               //AnimatedOpacity(
               //opacity: opacity,
               //duration: Duration(seconds: 0),
               Column(
                 children: <Widget>[
                   SizedBox(
-                    width: 200.w,
+                    width: 250.w,
+                    height: 50.h,
                     child: TextField(
                       controller: _idTextController,
                       maxLines: 1,
@@ -98,10 +88,11 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                     ),
                   ),
                   SizedBox(
-                    height: 25.h,
+                    height: 20.h,
                   ),
                   SizedBox(
-                    width: 200.w,
+                    width: 250.w,
+                    height: 50.h,
                     child: TextField(
                       controller: _pwTextController,
                       obscureText: true,
@@ -110,8 +101,65 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                           labelText: 'Password', border: OutlineInputBorder()),
                     ),
                   ),
-                  SizedBox(height: 20.h),
-                  Row(
+                  SizedBox(height: 50.h),
+                  SizedBox(
+                      width: 300.w,
+                      height: 50.h,
+                      child: ElevatedButton(
+                          onPressed: (() {
+                            if (_idTextController!.value.text.length == 0 ||
+                                _pwTextController!.value.text.length == 0) {
+                              makeDialog('빈칸이 있습니다');
+                            } else {
+                              reference!
+                                  .child(_idTextController!.value.text)
+                                  .onValue
+                                  .listen((event) {
+                                if (event.snapshot.value == null) {
+                                  makeDialog('아이디가 없습니다');
+                                } else {
+                                  reference!
+                                      .child(_idTextController!.value.text)
+                                      .onChildAdded
+                                      .listen((event) {
+                                    User user =
+                                        User.fromSnapshot(event.snapshot);
+                                    var bytes = utf8
+                                        .encode(_pwTextController!.value.text);
+                                    var digest = sha1.convert(bytes);
+                                    if (user.pw == digest.toString()) {
+                                      Navigator.of(context).pushNamed('/second',
+                                          arguments:
+                                              _idTextController!.value.text);
+                                    } else {
+                                      makeDialog('비밀번호가 틀립니다');
+                                    }
+                                  });
+                                }
+                              });
+                            }
+                          }),
+                          child: Text('로그인',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                          ))),
+                  SizedBox(height: 100.h),
+                  SizedBox(height: 30.h, child: Text('회원이 아니신가요?')),
+                  SizedBox(
+                      width: 300.w,
+                      height: 50.h,
+                      child: ElevatedButton(
+                          onPressed: (() {
+                            Navigator.of(context).pushNamed('/sign');
+                          }),
+                          child: Text('회원가입',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          style:
+                              ElevatedButton.styleFrom(primary: Colors.grey))),
+                  /*Row(
                     children: <Widget>[
                       TextButton(
                         onPressed: () {
@@ -159,7 +207,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                       )
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,
-                  ),
+                  ),*/
                 ],
               ),
               //)

@@ -44,6 +44,12 @@ dependencies:
   path: ^1.8.0
   shared_preferences: ^2.0.5
   crypto: ^3.0.1
+  table_calendar: ^3.0.3
+  intl: ^0.17.0
+  drift: ^1.4.0
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.0.0
+  get_it: ^7.2.0
 
 
 
@@ -57,6 +63,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  drift_dev: ^1.4.0
+  build_runner: ^2.1.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
