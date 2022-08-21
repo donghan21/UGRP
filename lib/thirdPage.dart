@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'main.dart';
 
-class ThirdPage extends StatelessWidget {
+class ThirdPage extends StatefulWidget {
+  @override
+  State<ThirdPage> createState() => _ThirdPageState();
+}
+
+class _ThirdPageState extends State<ThirdPage> {
+  TextEditingController? _targetNumber = TextEditingController(text: '0');
+  TextEditingController? _targetSet = TextEditingController(text: '0');
+  TextEditingController? _targetSeconds = TextEditingController(text: '0');
+  bool _targetLimit = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +37,67 @@ class ThirdPage extends StatelessWidget {
             Stack(children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushReplacementNamed('/fifth');
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) {
+                      return StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return AlertDialog(
+                            content: SizedBox(
+                                width: 200.w,
+                                height: 200.h,
+                                child: Column(children: <Widget>[
+                                  SizedBox(
+                                      height: 30.h,
+                                      width: 200.w,
+                                      child: Text('목표치 설정')),
+                                  SizedBox(height: 30.h),
+                                  Row(children: <Widget>[
+                                    SizedBox(width: 30.w),
+                                    SizedBox(
+                                        width: 50.w,
+                                        height: 50.h,
+                                        child: TextField(
+                                          controller: _targetNumber,
+                                          maxLines: 1,
+                                          decoration: InputDecoration(
+                                              border: OutlineInputBorder()),
+                                        )),
+                                    SizedBox(width: 50.w, child: Text(' 회 씩')),
+                                    SizedBox(
+                                        width: 50.w,
+                                        height: 50.h,
+                                        child: TextField(
+                                          controller: _targetSet,
+                                          maxLines: 1,
+                                          decoration: InputDecoration(
+                                              border: OutlineInputBorder()),
+                                        )),
+                                    SizedBox(width: 50.w, child: Text(' 세트'))
+                                  ]),
+                                  SizedBox(height: 10.h),
+                                  SizedBox(
+                                      height: 30.h,
+                                      width: 200.w,
+                                      child: Row(children: <Widget>[
+                                        Checkbox(
+                                          value: _targetLimit,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _targetLimit = value!;
+                                              print('$_targetLimit');
+                                            });
+                                          },
+                                        ),
+                                        Text('제한 없음'),
+                                      ])),
+                                  Padding(padding: EdgeInsets.fromLTRB(100.0.w, 0.0, 0.0, 0.0), child: ElevatedButton(onPressed: ( () {Navigator.of(context).pushReplacementNamed('/fifth');}), child: Icon(Icons.arrow_forward)),),
+                                ])),
+                           );
+                      });
+                    },
+                  );
                 },
                 child: Container(
                   width: 330.w,
@@ -42,47 +112,6 @@ class ThirdPage extends StatelessWidget {
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  /* child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '                 ',
-                            ),
-                            Text(
-                              '런지',
-                              style: TextStyle(
-                                  fontSize: 20.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/lunge');
-                              },
-                              icon: Icon(Icons.info_outline_rounded,
-                                  color: Colors.white, size: 30),
-                            ),
-                          ],
-                        )),
-                        OutlinedButton(
-                            onPressed: () {
-                              Navigator.of(context).pushReplacementNamed('/fifth');
-                            },
-                            style: OutlinedButton.styleFrom(
-                                minimumSize: Size(250.w, 150.h),
-                                side: BorderSide(color: Colors.blue)),
-                            child: Image.asset('assets/lunge_960_555.jpg',
-                                height: 150.h)),
-                        // fitHeight도 가능
-                      ],
-                    ),
-                  ),*/
                 ),
               ),
               Positioned(
@@ -90,7 +119,7 @@ class ThirdPage extends StatelessWidget {
                   left: 20.0.w,
                   child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacementNamed('/fifth');
+                        //Navigator.of(context).pushReplacementNamed('/fifth');
                       },
                       child: Text('런지',
                           style: TextStyle(
@@ -113,12 +142,25 @@ class ThirdPage extends StatelessWidget {
                                     width: 200.w,
                                     height: 280.h,
                                     child: Column(children: <Widget>[
-                                      ClipRRect(child: Image.asset('assets/lunge_960_555.jpg'), borderRadius: BorderRadius.circular(5),),
-                                    SizedBox(height: 10.h),
-                                    SizedBox(height: 30.h, width: 200.w, child: Text('런지 가이드')),
-                                    SizedBox(height: 100.h, width: 200.w, child: Text('1. 발을 어깨 너비로 벌리고 엉덩이와 함께 한 발을 앞으로 내딛습니다.\n'
-                                        ' 2. 먼저 포워드 런지를 시도하여 무릎이 안쪽 또는 바깥쪽으로 기울어지지는 않는지 확인합니다.\n '
-                                        '앞쪽 다리의 발꿈치를 사용하여 전체적인 무게 중심을 변화시키지 않으면서 지면에 힘을 가합니다.', style: TextStyle(fontSize: 10)))])),
+                                      ClipRRect(
+                                        child: Image.asset(
+                                            'assets/lunge_960_555.jpg'),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      SizedBox(
+                                          height: 30.h,
+                                          width: 200.w,
+                                          child: Text('런지 가이드')),
+                                      SizedBox(
+                                          height: 100.h,
+                                          width: 200.w,
+                                          child: Text(
+                                              '1. 뒤쪽 무릎이 내려갈 때 앞 무릎을 90도 각도로 확실하게 구부려 무릎이 발가락 바깥으로 나가지 않도록 합니다.\n'
+                                              '2. 상체는 꼿꼿이 펴서 앞 뒤로 구부러지지 않도록 합니다.\n '
+                                              '3. 뒤쪽 무릎을 서서히 낮추어서 무릎이 바닥에 세게 닿지 않도록 합니다.',
+                                              style: TextStyle(fontSize: 10)))
+                                    ])),
                                 actions: [
                                   FlatButton(
                                       child: Text('확인'),
@@ -135,7 +177,67 @@ class ThirdPage extends StatelessWidget {
             Stack(children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushReplacementNamed('/fifth');
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) {
+                      return StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return AlertDialog(
+                          content: SizedBox(
+                              width: 200.w,
+                              height: 200.h,
+                              child: Column(children: <Widget>[
+                                SizedBox(
+                                    height: 30.h,
+                                    width: 200.w,
+                                    child: Text('목표치 설정')),
+                                SizedBox(height: 30.h),
+                                Row(children: <Widget>[
+                                  SizedBox(width: 30.w),
+                                  SizedBox(
+                                      width: 50.w,
+                                      height: 50.h,
+                                      child: TextField(
+                                        controller: _targetSeconds,
+                                        maxLines: 1,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder()),
+                                      )),
+                                  SizedBox(width: 50.w, child: Text(' 초 씩')),
+                                  SizedBox(
+                                      width: 50.w,
+                                      height: 50.h,
+                                      child: TextField(
+                                        controller: _targetSet,
+                                        maxLines: 1,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder()),
+                                      )),
+                                  SizedBox(width: 50.w, child: Text(' 세트'))
+                                ]),
+                                SizedBox(height: 10.h),
+                                SizedBox(
+                                    height: 30.h,
+                                    width: 200.w,
+                                    child: Row(children: <Widget>[
+                                      Checkbox(
+                                        value: _targetLimit,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _targetLimit = value!;
+                                            print('$_targetLimit');
+                                          });
+                                        },
+                                      ),
+                                      Text('제한 없음'),
+                                    ])),
+                                Padding(padding: EdgeInsets.fromLTRB(100.0.w, 0.0, 0.0, 0.0), child: ElevatedButton(onPressed: ( () {Navigator.of(context).pushReplacementNamed('/fifth');}), child: Icon(Icons.arrow_forward)),),
+                              ])),
+                        );
+                      });
+                    },
+                  );
                 },
                 child: Container(
                   width: 330.w,
@@ -157,7 +259,7 @@ class ThirdPage extends StatelessWidget {
                   left: 20.0.w,
                   child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacementNamed('/fifth');
+                        //Navigator.of(context).pushReplacementNamed('/fifth');
                       },
                       child: Text('사이드플랭크',
                           style: TextStyle(
@@ -181,12 +283,25 @@ class ThirdPage extends StatelessWidget {
                                     width: 200.w,
                                     height: 280.h,
                                     child: Column(children: <Widget>[
-                                      ClipRRect(child: Image.asset('assets/sideplank_512_296.jpg'), borderRadius: BorderRadius.circular(5),),
+                                      ClipRRect(
+                                        child: Image.asset(
+                                            'assets/sideplank_512_296.jpg'),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
                                       SizedBox(height: 10.h),
-                                      SizedBox(height: 30.h, width: 200.w, child: Text('사이드플랭크 가이드')),
-                                      SizedBox(height: 100.h, width: 200.w, child: Text('1. 발을 어깨 너비로 벌리고 엉덩이와 함께 한 발을 앞으로 내딛습니다.\n'
-                                          ' 2. 먼저 포워드 런지를 시도하여 무릎이 안쪽 또는 바깥쪽으로 기울어지지는 않는지 확인합니다.\n '
-                                          '앞쪽 다리의 발꿈치를 사용하여 전체적인 무게 중심을 변화시키지 않으면서 지면에 힘을 가합니다.', style: TextStyle(fontSize: 10)))])),
+                                      SizedBox(
+                                          height: 30.h,
+                                          width: 200.w,
+                                          child: Text('사이드플랭크 가이드')),
+                                      SizedBox(
+                                          height: 100.h,
+                                          width: 200.w,
+                                          child: Text(
+                                              '1. 옆으로 누운 자세에서 팔꿈치를 자신의 어깨 밑에 위치합니다.\n'
+                                              '2. 팔꿈치, 엉덩이, 발뒤꿈치가 일직선이 되게 만들어줍니다.\n '
+                                              '3. 팔꿈치를 수직상태로 바닥에 붙이고 엉덩이를 들어 올려줍니다.',
+                                              style: TextStyle(fontSize: 10)))
+                                    ])),
                                 actions: [
                                   FlatButton(
                                       child: Text('확인'),
@@ -202,7 +317,67 @@ class ThirdPage extends StatelessWidget {
             Stack(children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushReplacementNamed('/fifth');
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) {
+                      return StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return AlertDialog(
+                          content: SizedBox(
+                              width: 200.w,
+                              height: 200.h,
+                              child: Column(children: <Widget>[
+                                SizedBox(
+                                    height: 30.h,
+                                    width: 200.w,
+                                    child: Text('목표치 설정')),
+                                SizedBox(height: 30.h),
+                                Row(children: <Widget>[
+                                  SizedBox(width: 30.w),
+                                  SizedBox(
+                                      width: 50.w,
+                                      height: 50.h,
+                                      child: TextField(
+                                        controller: _targetNumber,
+                                        maxLines: 1,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder()),
+                                      )),
+                                  SizedBox(width: 50.w, child: Text(' 회 씩')),
+                                  SizedBox(
+                                      width: 50.w,
+                                      height: 50.h,
+                                      child: TextField(
+                                        controller: _targetSet,
+                                        maxLines: 1,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder()),
+                                      )),
+                                  SizedBox(width: 50.w, child: Text(' 세트'))
+                                ]),
+                                SizedBox(height: 10.h),
+                                SizedBox(
+                                    height: 30.h,
+                                    width: 200.w,
+                                    child: Row(children: <Widget>[
+                                      Checkbox(
+                                        value: _targetLimit,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _targetLimit = value!;
+                                            print('$_targetLimit');
+                                          });
+                                        },
+                                      ),
+                                      Text('제한 없음'),
+                                    ])),
+                                Padding(padding: EdgeInsets.fromLTRB(100.0.w, 0.0, 0.0, 0.0), child: ElevatedButton(onPressed: ( () {Navigator.of(context).pushReplacementNamed('/fifth');}), child: Icon(Icons.arrow_forward)),),
+                              ])),
+                        );
+                      });
+                    },
+                  );
                 },
                 child: Container(
                   width: 330.w,
@@ -224,7 +399,7 @@ class ThirdPage extends StatelessWidget {
                   left: 20.0.w,
                   child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacementNamed('/fifth');
+                        //Navigator.of(context).pushReplacementNamed('/fifth');
                       },
                       child: Text('스쿼트',
                           style: TextStyle(
@@ -248,12 +423,26 @@ class ThirdPage extends StatelessWidget {
                                     width: 200.w,
                                     height: 280.h,
                                     child: Column(children: <Widget>[
-                                      ClipRRect(child: Image.asset('assets/squat_640_370.jpg'), borderRadius: BorderRadius.circular(5),),
+                                      ClipRRect(
+                                        child: Image.asset(
+                                            'assets/squat_640_370.jpg'),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
                                       SizedBox(height: 10.h),
-                                      SizedBox(height: 30.h, width: 200.w, child: Text('스쿼트 가이드')),
-                                      SizedBox(height: 100.h, width: 200.w, child: Text('1. 발을 어깨 너비로 벌리고 엉덩이와 함께 한 발을 앞으로 내딛습니다.\n'
-                                          ' 2. 먼저 포워드 런지를 시도하여 무릎이 안쪽 또는 바깥쪽으로 기울어지지는 않는지 확인합니다.\n '
-                                          '앞쪽 다리의 발꿈치를 사용하여 전체적인 무게 중심을 변화시키지 않으면서 지면에 힘을 가합니다.', style: TextStyle(fontSize: 10)))])),
+                                      SizedBox(
+                                          height: 30.h,
+                                          width: 200.w,
+                                          child: Text('스쿼트 가이드')),
+                                      SizedBox(
+                                          height: 100.h,
+                                          width: 200.w,
+                                          child: Text(
+                                              '1. 양발을 어깨너비로 벌리고 편하게 섭니다.\n'
+                                              '2. 허리를 꼿꼿이 세운 채, 무릎을 굽혀 상체를 내립니다.\n '
+                                              '* 내려갈 때 숨을 들이쉬고, 올라올 때 숨을 내쉽니다.'
+                                              ' 발뒤꿈치가 바닥에서 떨어지지 않도록 합니다. *',
+                                              style: TextStyle(fontSize: 10)))
+                                    ])),
                                 actions: [
                                   FlatButton(
                                       child: Text('확인'),

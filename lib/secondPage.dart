@@ -8,6 +8,7 @@ import 'main.dart';
 import 'package:ugrp/component/calendar.dart';
 import 'package:ugrp/component/schedule_card.dart';
 import 'package:ugrp/component/today_banner.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 
 class SecondPage extends StatefulWidget {
   @override
@@ -43,12 +44,89 @@ class _SecondPageState extends State<SecondPage> {
               alignment: Alignment.topRight,
               icon: Icon(Icons.face_outlined, size: 35),
               onPressed: (() {
-                showDialog(context: context, builder: (BuildContext ctx)
-                {
-                  return AlertDialog(
-                    content: Text(''),
-                  );
-                });
+                showDialog(
+                    context: context,
+                    builder: (BuildContext ctx) {
+                      return SimpleDialog(
+                          insetPadding: EdgeInsets.only(
+                            left: 220.w,
+                            bottom: 500.h,
+                            top: 9.h,
+                            right: 20.w,
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          children: <Widget>[
+                            Container(
+                                width: 65.w,
+                                height: 210.h,
+                                child: Column(children: <Widget>[
+                                  Container(margin: EdgeInsets.only(left: 100.w),height: 40.h, width: 40.w, child: Icon(Icons.face_outlined, size: 35)),
+                                  SizedBox(
+                                    width: 140.w,
+                                    height: 30.h,
+                                    child: Text('donghan21 님', maxLines: 1),
+                                  ),
+                                  SizedBox(
+                                      width: 100.w,
+                                      child: Text('환영합니다.',
+                                          textAlign: TextAlign.end)),
+                                  SizedBox(height: 20.h),
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 50.w),
+                                      child: GestureDetector(
+                                        onTap: (() {}),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.black)),
+                                            width: 85.w,
+                                            height: 20.h,
+                                            child: Text('비밀번호 변경',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 12.sp))),
+                                      )),
+                                  SizedBox(height: 10.h),
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 75.w),
+                                      child: GestureDetector(
+                                          onTap: (() {}),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.red)),
+                                            height: 20.h,
+                                            width: 60.w,
+                                            child: Text(
+                                              '회원 탈퇴',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.redAccent,
+                                                  fontSize: 12.sp),
+                                            ),
+                                          ))),
+                                  SizedBox(height: 15.h),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        GestureDetector(
+                                            onTap: (() {}),
+                                            child: SizedBox(
+                                                width: 50.w,
+                                                height: 30.h,
+                                                child: Text('로그 아웃',
+                                                    style: TextStyle(
+                                                        fontSize: 11)))),
+                                        SizedBox(width: 20.w, height: 30.h),
+                                        GestureDetector(
+                                            onTap: (() {}),
+                                            child: SizedBox(
+                                                width: 50.w, height: 30.h, child: Text('앱 종료', style: TextStyle(fontSize: 11),textAlign: TextAlign.end)))
+                                      ])
+                                ]))
+                          ]);
+                    });
                 /*showDialog(
                       context: context,
                       barrierDismissible: false,
@@ -103,8 +181,10 @@ class _SecondPageState extends State<SecondPage> {
                 SizedBox(height: 50.h),
                 SizedBox(
                     width: 300.w,
+                    height: 50.h,
                     child: ElevatedButton(
-                      child: Text('운동 시작하기'),
+                      child: Text('운동 시작하기',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       onPressed: () {
                         Navigator.of(context).pushNamed('/third');
                       },
@@ -151,7 +231,7 @@ class _SecondPageState extends State<SecondPage> {
           width: 300.w,
           child: Center(child: Text('달력')),
       ),*/
-      /*SizedBox(
+        /*SizedBox(
             width: 300.w,
             child: ElevatedButton(
               child: Text('운동 시작하기'),
