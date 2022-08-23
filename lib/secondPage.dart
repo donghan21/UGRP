@@ -13,7 +13,6 @@ class SecondPage extends StatefulWidget {
   @override
   State<SecondPage> createState() => _SecondPageState();
 }
-
 class _SecondPageState extends State<SecondPage> {
   int lasttime = 0;
   int lastkcal = 0;
@@ -24,6 +23,7 @@ class _SecondPageState extends State<SecondPage> {
     DateTime.now().day,
   );
   DateTime focusedDay = DateTime.now();
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,12 @@ class _SecondPageState extends State<SecondPage> {
                                 width: 65.w,
                                 height: 210.h,
                                 child: Column(children: <Widget>[
-                                  Container(margin: EdgeInsets.only(left: 100.w),height: 40.h, width: 40.w, child: Icon(Icons.face_outlined, size: 35)),
+                                  Container(
+                                      margin: EdgeInsets.only(left: 100.w),
+                                      height: 40.h,
+                                      width: 40.w,
+                                      child:
+                                          Icon(Icons.face_outlined, size: 35)),
                                   SizedBox(
                                     width: 140.w,
                                     height: 30.h,
@@ -110,7 +115,10 @@ class _SecondPageState extends State<SecondPage> {
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         GestureDetector(
-                                            onTap: (() {Navigator.of(context).pushReplacementNamed('/');}),
+                                            onTap: (() {
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed('/');
+                                            }),
                                             child: SizedBox(
                                                 width: 50.w,
                                                 height: 30.h,
@@ -121,7 +129,12 @@ class _SecondPageState extends State<SecondPage> {
                                         GestureDetector(
                                             onTap: (() {}),
                                             child: SizedBox(
-                                                width: 50.w, height: 30.h, child: Text('앱 종료', style: TextStyle(fontSize: 11),textAlign: TextAlign.end)))
+                                                width: 50.w,
+                                                height: 30.h,
+                                                child: Text('앱 종료',
+                                                    style:
+                                                        TextStyle(fontSize: 11),
+                                                    textAlign: TextAlign.end)))
                                       ])
                                 ]))
                           ]);
