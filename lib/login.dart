@@ -128,7 +128,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                                         .encode(_pwTextController!.value.text);
                                     var digest = sha1.convert(bytes);
                                     if (user.pw == digest.toString()) {
-                                      Navigator.of(context).pushNamed('/second',
+                                      Navigator.of(context).pushReplacementNamed('/second',
                                           arguments:
                                               _idTextController!.value.text);
                                     } else {

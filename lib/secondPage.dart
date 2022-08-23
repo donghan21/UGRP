@@ -8,7 +8,6 @@ import 'main.dart';
 import 'package:ugrp/component/calendar.dart';
 import 'package:ugrp/component/schedule_card.dart';
 import 'package:ugrp/component/today_banner.dart';
-import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 
 class SecondPage extends StatefulWidget {
   @override
@@ -111,7 +110,7 @@ class _SecondPageState extends State<SecondPage> {
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         GestureDetector(
-                                            onTap: (() {}),
+                                            onTap: (() {Navigator.of(context).pushReplacementNamed('/');}),
                                             child: SizedBox(
                                                 width: 50.w,
                                                 height: 30.h,
@@ -181,7 +180,7 @@ class _SecondPageState extends State<SecondPage> {
                 SizedBox(height: 50.h),
                 SizedBox(
                     width: 300.w,
-                    height: 50.h,
+                    height: 45.h,
                     child: ElevatedButton(
                       child: Text('운동 시작하기',
                           style: TextStyle(fontWeight: FontWeight.bold)),
