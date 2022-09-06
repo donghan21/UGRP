@@ -11,6 +11,8 @@ import '../component/model_inference_service.dart';
 import '../component/service_locator.dart';
 import '../utils/isolate_utils.dart';
 import '../component/model_camera_preview.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import '../component/voice.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({
@@ -28,10 +30,12 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   CameraController? _cameraController;
   late List<CameraDescription> _cameras;
   late CameraDescription _cameraDescription;
+  final Voice speaker = Voice();
 
   late bool _isRun;
   bool _predicting = false;
   bool _draw = false;
+  bool _onOff =false;
 
   late IsolateUtils _isolateUtils;
   late ModelInferenceService _modelInferenceService;
@@ -153,8 +157,27 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
           Icons.filter_center_focus,
         ),
       ),
+      IconButton(
+        onPressed: () => _voiceOnOff,
+        color: Colors.white,
+        iconSize: 30.0,
+        icon: const Icon(
+          Icons.keyboard_voice_outlined,
+        ),
+      ),
     ],
   );
+
+  void get _voiceOnOff {
+
+    _onOff = !_onOff;
+
+    if (_onOff) {
+      speaker.ttsVoiceOff();
+    } else {
+      speaker.ttsVoiceOn();
+    }
+  }
 
   void get _imageStreamToggle {
     setState(() {
