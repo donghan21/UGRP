@@ -1,19 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ugrp/login.dart';
+import 'package:intl/intl.dart';
+import 'package:ugrp/loginPage.dart';
 import 'package:flutter/services.dart';
-import 'package:ugrp/seventhPage.dart';
-import 'sixthPage.dart';
+import 'package:ugrp/resultPage.dart';
+import 'cameraPage.dart';
 import 'main.dart';
 import 'package:ugrp/component/calendar.dart';
 import 'package:ugrp/component/schedule_card.dart';
 import 'package:ugrp/component/today_banner.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SecondPage extends StatefulWidget {
   @override
   State<SecondPage> createState() => _SecondPageState();
 }
+
 class _SecondPageState extends State<SecondPage> {
+  final _authentication = FirebaseAuth.instance;
+  User? loggedUser;
+
+  @override
+  void initState() {
+    super.initState();
+    lasttime += information.mytime!;
+    lastkcal += information.mykcal!;
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _authentication.currentUser;
+      if (user != null) {
+        loggedUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   int lasttime = 0;
   int lastkcal = 0;
 
@@ -24,13 +50,29 @@ class _SecondPageState extends State<SecondPage> {
   );
   DateTime focusedDay = DateTime.now();
 
-
   @override
   Widget build(BuildContext context) {
-    final String id = ModalRoute.of(context)!.settings.arguments.toString();
     //final inforlast = ModalRoute.of(context)!.settings.arguments as Information;
-    lasttime += information.mytime!;
-    lastkcal += information.mykcal!;
+    /*lasttime += information.mytime!;
+    lastkcal += information.mykcal!;*/
+
+    //print('$lasttime');
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(loggedUser!.uid)
+        .collection('calendar')
+        .doc(DateFormat("yyyy-MM-dd").format(DateTime.now()))
+        .set({'kcal': lastkcal, 'time': lasttime});
+    print('업로드 완료');
+
+    /*var documentSnapshot = FirebaseFirestore.instance
+        .collection('user')
+        .doc(loggedUser!.uid)
+        .collection('calendar')
+        .doc(DateFormat("yyyy-MM-dd").format(DateTime.now()));
+
+    documentSnapshot.get().then((value) => {print(value.data()!["kcal"])});*/
 
     return Scaffold(
         body: Center(
@@ -49,7 +91,7 @@ class _SecondPageState extends State<SecondPage> {
                       return SimpleDialog(
                           insetPadding: EdgeInsets.only(
                             left: 220.w,
-                            bottom: 500.h,
+                            bottom: 480.h,
                             top: 9.h,
                             right: 20.w,
                           ),
@@ -57,7 +99,7 @@ class _SecondPageState extends State<SecondPage> {
                           children: <Widget>[
                             Container(
                                 width: 65.w,
-                                height: 210.h,
+                                height: 230.h,
                                 child: Column(children: <Widget>[
                                   Container(
                                       margin: EdgeInsets.only(left: 100.w),
@@ -121,10 +163,17 @@ class _SecondPageState extends State<SecondPage> {
                                             }),
                                             child: SizedBox(
                                                 width: 50.w,
-                                                height: 30.h,
-                                                child: Text('로그 아웃',
-                                                    style: TextStyle(
-                                                        fontSize: 11)))),
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    _authentication.signOut();
+                                                    Navigator.of(context)
+                                                        .pushReplacementNamed(
+                                                            '/');
+                                                  },
+                                                  child: Text('로그 아웃',
+                                                      style: TextStyle(
+                                                          fontSize: 8.sp)),
+                                                ))),
                                         SizedBox(width: 20.w, height: 30.h),
                                         GestureDetector(
                                             onTap: (() {}),
@@ -185,10 +234,20 @@ class _SecondPageState extends State<SecondPage> {
                 SizedBox(height: 8.0),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ScheduleCard(
-                    calory: 11,
-                    totaltime: 9,
-                  ),
+                  child: FutureBuilder(
+                      future: getKcal(focusedDay),
+                      builder: (context, AsyncSnapshot<List<int>> snapshot) {
+                        if(snapshot.hasData) {
+                        return ScheduleCard(
+                          calory: snapshot.data![0].toInt(),
+                          totaltime: snapshot.data![1].toInt(),
+                        );}
+                        else
+                          {return ScheduleCard(
+                            calory: 0,
+                            totaltime: 0,
+                          );}
+                      }),
                 ),
                 SizedBox(height: 50.h),
                 SizedBox(
@@ -260,5 +319,34 @@ class _SecondPageState extends State<SecondPage> {
       this.selectedDay = selectedDay;
       this.focusedDay = selectedDay;
     });
+  }
+
+  Future<List<int>> getKcal(DateTime date) async {
+    DocumentReference userRef = FirebaseFirestore.instance
+        .collection('user')
+        .doc(loggedUser!.uid)
+        .collection('calendar')
+        .doc(DateFormat("yyyy-MM-dd").format(date));
+
+    //int? result = null;
+    late List<int> result = [0, 0];
+
+    await userRef.get().then(
+      (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        result[0] = data['kcal'];
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
+    await userRef.get().then(
+      (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        result[1] = data['time'];
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
+
+    print('${result[0]}');
+    return (result);
   }
 }

@@ -1,13 +1,13 @@
 import 'package:firebase_database/firebase_database.dart';
 
-class User {
+class Userinfor {
   String id;
   String pw;
   String createTime;
 
-  User(this.id, this.pw, this.createTime);
+  Userinfor(this.id, this.pw, this.createTime);
 
-  User.fromSnapshot(DataSnapshot snapshot)
+  Userinfor.fromSnapshot(DataSnapshot snapshot)
       :
         id = snapshot.value['id'],
         pw = snapshot.value['pw'],

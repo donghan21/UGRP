@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
-import 'package:ugrp/signPage.dart';
-import 'secondPage.dart';
-import 'thirdPage.dart';
-import 'seventhPage.dart';
+import 'cameraPage.dart';
+import 'loginPage.dart';
+import 'package:ugrp/signUpPage.dart';
+import 'mainPage.dart';
+import 'choicePage.dart';
+import 'resultPage.dart';
 import 'fourthPage.dart';
 import 'fifthPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp();
   await initializeDateFormatting();
   runApp(MyApp());
 }
@@ -33,11 +35,10 @@ class MyApp extends StatelessWidget {
           '/sign': (context) => SignPage(),
           '/second': (context) => SecondPage(),
           '/third': (context) => ThirdPage(),
-          '/lunge': (context) => LungeExplain(),
+          /*'/lunge': (context) => LungeExplain(),
           '/side' : (context) => SidePlankExplain(),
-          '/squat': (context) => SquatExplain(),
+          '/squat': (context) => SquatExplain(),*/
           '/fifth': (context) => FifthPage(),
-          //'/sixth': (context) => SixthPage(),
           '/seventh': (context) => SeventhPage(),
         },
       ),

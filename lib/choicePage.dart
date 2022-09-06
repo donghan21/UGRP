@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'cameraPage.dart';
+import 'component/model_inference_service.dart';
+import 'component/service_locator.dart';
 import 'main.dart';
 
 class ThirdPage extends StatefulWidget {
@@ -12,6 +15,7 @@ class _ThirdPageState extends State<ThirdPage> {
   TextEditingController? _targetSet = TextEditingController(text: '0');
   TextEditingController? _targetSeconds = TextEditingController(text: '0');
   bool _targetLimit = false;
+  int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -44,57 +48,66 @@ class _ThirdPageState extends State<ThirdPage> {
                       return StatefulBuilder(builder:
                           (BuildContext context, StateSetter setState) {
                         return AlertDialog(
-                            content: SizedBox(
-                                width: 200.w,
-                                height: 200.h,
-                                child: Column(children: <Widget>[
+                          content: SizedBox(
+                              width: 200.w,
+                              height: 200.h,
+                              child: Column(children: <Widget>[
+                                SizedBox(
+                                    height: 30.h,
+                                    width: 200.w,
+                                    child: Text('목표치 설정')),
+                                SizedBox(height: 30.h),
+                                Row(children: <Widget>[
+                                  SizedBox(width: 30.w),
                                   SizedBox(
-                                      height: 30.h,
-                                      width: 200.w,
-                                      child: Text('목표치 설정')),
-                                  SizedBox(height: 30.h),
-                                  Row(children: <Widget>[
-                                    SizedBox(width: 30.w),
-                                    SizedBox(
-                                        width: 50.w,
-                                        height: 50.h,
-                                        child: TextField(
-                                          controller: _targetNumber,
-                                          maxLines: 1,
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder()),
-                                        )),
-                                    SizedBox(width: 50.w, child: Text(' 회 씩')),
-                                    SizedBox(
-                                        width: 50.w,
-                                        height: 50.h,
-                                        child: TextField(
-                                          controller: _targetSet,
-                                          maxLines: 1,
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder()),
-                                        )),
-                                    SizedBox(width: 50.w, child: Text(' 세트'))
-                                  ]),
-                                  SizedBox(height: 10.h),
+                                      width: 50.w,
+                                      height: 50.h,
+                                      child: TextField(
+                                        controller: _targetNumber,
+                                        maxLines: 1,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder()),
+                                      )),
+                                  SizedBox(width: 50.w, child: Text(' 회 씩')),
                                   SizedBox(
-                                      height: 30.h,
-                                      width: 200.w,
-                                      child: Row(children: <Widget>[
-                                        Checkbox(
-                                          value: _targetLimit,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _targetLimit = value!;
-                                              print('$_targetLimit');
-                                            });
-                                          },
-                                        ),
-                                        Text('제한 없음'),
-                                      ])),
-                                  Padding(padding: EdgeInsets.fromLTRB(100.0.w, 0.0, 0.0, 0.0), child: ElevatedButton(onPressed: ( () {Navigator.of(context).pushReplacementNamed('/fifth');}), child: Icon(Icons.arrow_forward)),),
-                                ])),
-                           );
+                                      width: 50.w,
+                                      height: 50.h,
+                                      child: TextField(
+                                        controller: _targetSet,
+                                        maxLines: 1,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder()),
+                                      )),
+                                  SizedBox(width: 50.w, child: Text(' 세트'))
+                                ]),
+                                SizedBox(height: 10.h),
+                                SizedBox(
+                                    height: 30.h,
+                                    width: 200.w,
+                                    child: Row(children: <Widget>[
+                                      Checkbox(
+                                        value: _targetLimit,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _targetLimit = value!;
+                                            print('$_targetLimit');
+                                          });
+                                        },
+                                      ),
+                                      Text('제한 없음'),
+                                    ])),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      100.0.w, 0.0, 0.0, 0.0),
+                                  child: ElevatedButton(
+                                      onPressed: (() {
+                                        index = 0;
+                                        _onTapCamera(context);
+                                      }),
+                                      child: Icon(Icons.arrow_forward)),
+                                ),
+                              ])),
+                        );
                       });
                     },
                   );
@@ -232,7 +245,16 @@ class _ThirdPageState extends State<ThirdPage> {
                                       ),
                                       Text('제한 없음'),
                                     ])),
-                                Padding(padding: EdgeInsets.fromLTRB(100.0.w, 0.0, 0.0, 0.0), child: ElevatedButton(onPressed: ( () {Navigator.of(context).pushReplacementNamed('/fifth');}), child: Icon(Icons.arrow_forward)),),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      100.0.w, 0.0, 0.0, 0.0),
+                                  child: ElevatedButton(
+                                      onPressed: (() {
+                                        index = 1;
+                                        _onTapCamera(context);
+                                      }),
+                                      child: Icon(Icons.arrow_forward)),
+                                ),
                               ])),
                         );
                       });
@@ -372,7 +394,16 @@ class _ThirdPageState extends State<ThirdPage> {
                                       ),
                                       Text('제한 없음'),
                                     ])),
-                                Padding(padding: EdgeInsets.fromLTRB(100.0.w, 0.0, 0.0, 0.0), child: ElevatedButton(onPressed: ( () {Navigator.of(context).pushReplacementNamed('/fifth');}), child: Icon(Icons.arrow_forward)),),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      100.0.w, 0.0, 0.0, 0.0),
+                                  child: ElevatedButton(
+                                      onPressed: (() {
+                                        index = 1;
+                                        _onTapCamera(context);
+                                      }),
+                                      child: Icon(Icons.arrow_forward)),
+                                ),
                               ])),
                         );
                       });
@@ -458,6 +489,18 @@ class _ThirdPageState extends State<ThirdPage> {
           ],
         ),
       ]),
+    );
+  }
+  void _onTapCamera(BuildContext context) {
+    locator<ModelInferenceService>().setModelConfig(index!);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return CameraPage(index: index!);
+        },
+      ),
     );
   }
 }

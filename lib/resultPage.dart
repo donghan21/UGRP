@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'sixthPage.dart';
+import 'package:intl/intl.dart';
+import 'cameraPage.dart';
 
 class SeventhPage extends StatefulWidget {
 
@@ -10,8 +13,39 @@ class SeventhPage extends StatefulWidget {
 
 class _SeventhPage extends State<SeventhPage> {
 
+  final _authentication = FirebaseAuth.instance;
+  User? loggedUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _authentication.currentUser;
+      if (user != null) {
+        loggedUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  int lastkcal = 0;
+  int lasttime = 0;
+
   @override
   Widget build(BuildContext context) {
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(loggedUser!.uid)
+        .collection('calendar')
+        .doc(DateFormat("yyyy-MM-dd").format(DateTime.now()))
+        .set({'kcal': lastkcal, 'time': lasttime});
+    print('업로드 완료');
 
     //final infor = ModalRoute.of(context)!.settings.arguments as Information;
     return Scaffold(
@@ -29,12 +63,12 @@ class _SeventhPage extends State<SeventhPage> {
                 Container(decoration: BoxDecoration(color: Colors.black26, border: Border(left: BorderSide(color: Colors.black, width: 2.0), top: BorderSide(color: Colors.black, width: 2.0), right: BorderSide(color: Colors.black, width: 1.0))),width: 150.w, height: 35.h, alignment: Alignment.center, child: Text('소모 칼로리')),
                 Container(decoration: BoxDecoration(color: Colors.black26, border: Border(top: BorderSide(color: Colors.black, width: 2.0), right: BorderSide(color: Colors.black, width: 2.0))),width: 150.w, height: 35.h, alignment: Alignment.center, child: Text('소요 시간', textAlign: TextAlign.center)),]),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget> [
-                Container(decoration: BoxDecoration(color: Colors.white, border: Border(left: BorderSide(color: Colors.black, width: 2.0), bottom: BorderSide(color: Colors.black, width: 2.0), top: BorderSide(color: Colors.black, width: 1.0), right: BorderSide(color: Colors.black, width: 1.0))),width: 150.w, height: 35.h, alignment: Alignment.center, child: Text('?? kcal')),
-                Container(decoration: BoxDecoration(color: Colors.white, border: Border(bottom: BorderSide(color: Colors.black, width: 2.0), right: BorderSide(color: Colors.black, width: 2.0), top: BorderSide(color: Colors.black, width: 1.0))),width: 150.w, height: 35.h, alignment: Alignment.center, child: Text('?? 분')),]),
+                Container(decoration: BoxDecoration(color: Colors.white, border: Border(left: BorderSide(color: Colors.black, width: 2.0), bottom: BorderSide(color: Colors.black, width: 2.0), top: BorderSide(color: Colors.black, width: 1.0), right: BorderSide(color: Colors.black, width: 1.0))),width: 150.w, height: 35.h, alignment: Alignment.center, child: Text('${information.mykcal} kcal')),
+                Container(decoration: BoxDecoration(color: Colors.white, border: Border(bottom: BorderSide(color: Colors.black, width: 2.0), right: BorderSide(color: Colors.black, width: 2.0), top: BorderSide(color: Colors.black, width: 1.0))),width: 150.w, height: 35.h, alignment: Alignment.center, child: Text('${information.mytime} 분')),]),
               SizedBox(height: 30.h,),
               Container(decoration: BoxDecoration(border: Border.all(color: Colors.black)),width: 200.w, height: 170.h, child: Text('칼로리에 맞는 적당한 음식 사진 혹은 이미지')),
               SizedBox(height: 30.h,),
-              SizedBox(width: 250.w, child: Text('?? 만큼의 칼로리를 소비했습니다!', style: TextStyle(fontSize: 17.sp))),
+              SizedBox(width: 250.w, child: Text('제로 콜라 1캔 만큼의 칼로리를 소비했습니다!', style: TextStyle(fontSize: 17.sp))),
               SizedBox(height: 40.h),
               ElevatedButton(onPressed: ( () {Navigator.of(context).pushReplacementNamed('/second');} ), child: Text('메뉴로 돌아가기'),style: ElevatedButton.styleFrom(minimumSize: Size(280.w, 40.h)))
 
@@ -45,12 +79,13 @@ class _SeventhPage extends State<SeventhPage> {
           ),
         ),
     );
+
   }
 }
 
-
-/*class Information {
+// 데이터 받아오고  나머지는 꾸미는 거 남음.
+class Information {
   int? mytime;
   int? mykcal;
   Information({this.mytime, this.mykcal});
-}*/
+}
