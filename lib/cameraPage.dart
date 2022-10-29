@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'mainPage.dart';
 import 'resultPage.dart';
 import 'dart:ui';
 
@@ -35,7 +36,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   late bool _isRun;
   bool _predicting = false;
   bool _draw = false;
-  bool _onOff =false;
+  bool _onOff = false;
 
   late IsolateUtils _isolateUtils;
   late ModelInferenceService _modelInferenceService;
@@ -129,48 +130,55 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   }
 
   AppBar get _buildAppBar => AppBar(
-    title: Text(
-      models[widget.index]['title']!,
-      style: TextStyle(
-          color: Colors.white,
-          fontSize: ScreenUtil().setSp(28),
-          fontWeight: FontWeight.bold),
-    ),
-  );
+        title: Text(
+          'Pose Landmark',
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: ScreenUtil().setSp(28),
+              fontWeight: FontWeight.bold),
+        ),
+      );
 
   Row get _buildFloatingActionButton => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      IconButton(
-        onPressed: () => _cameraDirectionToggle,
-        color: Colors.white,
-        iconSize: ScreenUtil().setWidth(30.0),
-        icon: const Icon(
-          Icons.cameraswitch,
-        ),
-      ),
-      IconButton(
-        onPressed: () => _imageStreamToggle,
-        color: Colors.white,
-        iconSize: ScreenUtil().setWidth(30.0),
-        icon: const Icon(
-          Icons.filter_center_focus,
-        ),
-      ),
-      IconButton(
-        onPressed: () => _voiceOnOff,
-        color: Colors.white,
-        iconSize: 30.0,
-        icon: const Icon(
-          Icons.keyboard_voice_outlined,
-        ),
-      ),
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          IconButton(
+            onPressed: () => _cameraDirectionToggle,
+            color: Colors.white,
+            iconSize: ScreenUtil().setWidth(30.0),
+            icon: const Icon(
+              Icons.cameraswitch,
+            ),
+          ),
+          IconButton(
+            onPressed: () => _imageStreamToggle,
+            color: _draw == true ? Colors.green : Colors.white,
+            iconSize: ScreenUtil().setWidth(30.0),
+            icon: const Icon(
+              Icons.filter_center_focus,
+            ),
+          ),
+          IconButton(
+            onPressed: () => _voiceOnOff,
+            color: _onOff == true ? Colors.red : Colors.green,
+            iconSize: 30.0,
+            icon: const Icon(
+              Icons.keyboard_voice_outlined,
+            ),
+          ),
+          IconButton(
+            onPressed: (() {
+              Navigator.of(context).pushReplacementNamed('/seventh');
+            }),
+            icon: const Icon(Icons.next_plan_outlined),
+          )
+        ],
+      );
 
   void get _voiceOnOff {
-
-    _onOff = !_onOff;
+    setState(() {
+      _onOff = !_onOff;
+    });
 
     if (_onOff) {
       speaker.ttsVoiceOff();
@@ -182,14 +190,22 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   void get _imageStreamToggle {
     setState(() {
       _draw = !_draw;
+      print(_draw == true ? 'draw is true' : 'draw is false');
     });
 
     _isRun = !_isRun;
+
     if (_isRun) {
       _cameraController!.startImageStream(
-            (CameraImage cameraImage) async =>
-        await _inference(cameraImage: cameraImage),
+        (CameraImage cameraImage) async =>
+            await _inference(cameraImage: cameraImage),
       );
+      print('isrun isrun');
+      if (_predicting == true) {
+        print('predicting is true');
+      } else {
+        print('predicting is false');
+      }
     } else {
       _cameraController!.stopImageStream();
     }
@@ -209,10 +225,15 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   }
 
   Future<void> _inference({required CameraImage cameraImage}) async {
-    if (!mounted) return;
+    if (!mounted) {
+      print('mounted is false');
+      return;
+    }
 
     if (_modelInferenceService.model.interpreter != null) {
+      print('interpreter is not null');
       if (_predicting || !_draw) {
+        print('predicting is true or draw is false');
         return;
       }
 
@@ -225,14 +246,15 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
           isolateUtils: _isolateUtils,
           cameraImage: cameraImage,
         );
+        print('draw is true');
       }
 
       setState(() {
         _predicting = false;
       });
     }
+    if (_modelInferenceService.model.interpreter == null) {
+      print('interpreter is null');
+    }
   }
 }
-
-
-Information information = new Information(mytime: 1, mykcal: 3);

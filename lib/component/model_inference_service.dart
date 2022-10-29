@@ -11,9 +11,6 @@ import 'pose_service.dart';
 import 'service_locator.dart';
 
 enum Models {
-  FaceDetection,
-  FaceMesh,
-  Hands,
   Pose,
 }
 
@@ -42,20 +39,8 @@ class ModelInferenceService {
     responsePort.close();
   }
 
-  void setModelConfig(int index) {
-    switch (Models.values[index]) {
-      /*case Models.FaceDetection:
-        model = locator<FaceDetection>();
-        handler = runFaceDetector;
-        break;
-      case Models.FaceMesh:
-        model = locator<FaceMesh>();
-        handler = runFaceMesh;
-        break;
-      case Models.Hands:
-        model = locator<Hands>();
-        handler = runHandDetector;
-        break;*/
+  void setModelConfig() {
+    switch (Models.Pose) {
       case Models.Pose:
         model = locator<Pose>();
         handler = runPoseEstimator;

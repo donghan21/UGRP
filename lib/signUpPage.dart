@@ -29,20 +29,22 @@ class _SignPage extends State<SignPage> {
   String userEmail = '';
   String userPW = '';
 
-  void _tryValidation() {
+  bool _tryValidation() {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
+      print('isValid is true');
       _formKey.currentState!.save();
+      return true;
+    }
+    else {
+      print('isValid is false');
+      return false;
     }
   }
 
   @override
   void initState() {
     super.initState();
-    /*_idTextController = TextEditingController();
-    _pwTextController = TextEditingController();
-    _pwCheckTextController = TextEditingController();*/
-
     _database = FirebaseDatabase(databaseURL: _databaseURL);
     reference = _database?.reference().child('user');
   }
@@ -75,10 +77,10 @@ class _SignPage extends State<SignPage> {
                             return null;
                           },
                           onSaved: (value) {
-                            userID = value!;
+                            setState(() {userID = value!;});
                           },
                           onChanged: (value) {
-                            userID = value;
+                            setState(() {userID = value;});
                           },
                           //controller: _idTextController,
                           maxLines: 1,
@@ -103,10 +105,14 @@ class _SignPage extends State<SignPage> {
                             return null;
                           },
                           onSaved: (value) {
-                            userEmail = value!;
+                            setState(() {
+                              userEmail = value!;
+                            });
                           },
                           onChanged: (value) {
-                            userEmail = value;
+                            setState(() {
+                              userEmail = value;
+                            });
                           },
                           //controller: _pwTextController,
                           maxLines: 1,
@@ -130,10 +136,14 @@ class _SignPage extends State<SignPage> {
                             return null;
                           },
                           onSaved: (value) {
-                            userPW = value!;
+                            setState(() {
+                              userPW = value!;
+                            });
                           },
                           onChanged: (value) {
-                            userPW = value;
+                            setState(() {
+                              userPW = value;
+                            });
                           },
                           //controller: _pwCheckTextController,
                           obscureText: true,
@@ -149,23 +159,30 @@ class _SignPage extends State<SignPage> {
                       ),
                       FlatButton(
                         onPressed: () async {
-                          _tryValidation();
-                          try {
-                            final newUser =
-                                await _authentication.createUserWithEmailAndPassword(
-                                    email: userEmail, password: userPW);
+                          if(_tryValidation() == true){
+                            try {
+                              final newUser =
+                              await _authentication
+                                  .createUserWithEmailAndPassword(
+                                  email: userEmail, password: userPW);
+                              print('newUser 만들기 완료');
 
-                            FirebaseFirestore.instance.collection('user').doc(newUser.user!.uid)
-                                .set({
-                              'userID' : userID,
-                              'email' : userEmail,
-                            });
-
-                            if (newUser.user != null) {
-                              print('pop');
-                              Navigator.of(context).pop();
+                              if (newUser.user != null) {
+                                print('user가 null이 아님');
+                                FirebaseFirestore.instance.collection('user')
+                                    .doc(newUser.user!.uid)
+                                    .set({
+                                  'userID': userID,
+                                  'email': userEmail,
+                                });
+                                print('pop');
+                                Navigator.of(context).pop();
+                              }
+                            } catch (e) {
+                              makeDialog('이미 존재하는 이메일입니다.');
                             }
-                          } catch (e) {
+                          } else {
+                            print('error');
                             if(_formKey.currentState!.validate()){
                             makeDialog('이미 존재하는 이메일입니다.');
                             } else {makeDialog('입력 형식을 확인해주세요');}
@@ -180,7 +197,6 @@ class _SignPage extends State<SignPage> {
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,
                   ),
-
               ),
             ),
           ),

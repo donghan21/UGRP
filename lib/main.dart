@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => LoginPage(),
           '/sign': (context) => SignPage(),
-          '/second': (context) => SecondPage(),
+          '/second': (context) => SecondPage(0, 0),
           '/third': (context) => ThirdPage(),
           /*'/lunge': (context) => LungeExplain(),
           '/side' : (context) => SidePlankExplain(),

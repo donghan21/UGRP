@@ -58,7 +58,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                     child: Text('목표치 설정')),
                                 SizedBox(height: 30.h),
                                 Row(children: <Widget>[
-                                  SizedBox(width: 30.w),
+                                  SizedBox(width: 10.w),
                                   SizedBox(
                                       width: 50.w,
                                       height: 50.h,
@@ -99,12 +99,15 @@ class _ThirdPageState extends State<ThirdPage> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(
                                       100.0.w, 0.0, 0.0, 0.0),
-                                  child: ElevatedButton(
-                                      onPressed: (() {
-                                        index = 0;
-                                        _onTapCamera(context);
-                                      }),
-                                      child: Icon(Icons.arrow_forward)),
+                                  child: SizedBox(
+                                    height: 40.h,
+                                    child: ElevatedButton(
+                                        onPressed: (() {
+                                          index = 0;
+                                          _onTapCamera(context);
+                                        }),
+                                        child: Icon(Icons.arrow_forward)),
+                                  ),
                                 ),
                               ])),
                         );
@@ -117,11 +120,11 @@ class _ThirdPageState extends State<ThirdPage> {
                   height: 200.h,
                   child: ClipRRect(
                     child: Image.asset('assets/lunge_960_555.jpg',
-                        fit: BoxFit.fitHeight),
+                        fit: BoxFit.fitWidth),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.white,
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -207,7 +210,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                     child: Text('목표치 설정')),
                                 SizedBox(height: 30.h),
                                 Row(children: <Widget>[
-                                  SizedBox(width: 30.w),
+                                  SizedBox(width: 10.w),
                                   SizedBox(
                                       width: 50.w,
                                       height: 50.h,
@@ -248,12 +251,15 @@ class _ThirdPageState extends State<ThirdPage> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(
                                       100.0.w, 0.0, 0.0, 0.0),
-                                  child: ElevatedButton(
-                                      onPressed: (() {
-                                        index = 1;
-                                        _onTapCamera(context);
-                                      }),
-                                      child: Icon(Icons.arrow_forward)),
+                                  child: SizedBox(
+                                    height: 40.h,
+                                    child: ElevatedButton(
+                                        onPressed: (() {
+                                          index = 1;
+                                          _onTapCamera(context);
+                                        }),
+                                        child: Icon(Icons.arrow_forward)),
+                                  ),
                                 ),
                               ])),
                         );
@@ -266,11 +272,11 @@ class _ThirdPageState extends State<ThirdPage> {
                   height: 200.h,
                   child: ClipRRect(
                     child: Image.asset('assets/sideplank_512_296.jpg',
-                        fit: BoxFit.fitHeight),
+                        fit: BoxFit.fitWidth),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.white,
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -356,7 +362,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                     child: Text('목표치 설정')),
                                 SizedBox(height: 30.h),
                                 Row(children: <Widget>[
-                                  SizedBox(width: 30.w),
+                                  SizedBox(width: 10.w),
                                   SizedBox(
                                       width: 50.w,
                                       height: 50.h,
@@ -397,12 +403,15 @@ class _ThirdPageState extends State<ThirdPage> {
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(
                                       100.0.w, 0.0, 0.0, 0.0),
-                                  child: ElevatedButton(
-                                      onPressed: (() {
-                                        index = 1;
-                                        _onTapCamera(context);
-                                      }),
-                                      child: Icon(Icons.arrow_forward)),
+                                  child: SizedBox(
+                                    height: 40.h,
+                                    child: ElevatedButton(
+                                        onPressed: (() {
+                                          index = 2;
+                                          _onTapCamera(context);
+                                        }),
+                                        child: Icon(Icons.arrow_forward)),
+                                  ),
                                 ),
                               ])),
                         );
@@ -415,11 +424,11 @@ class _ThirdPageState extends State<ThirdPage> {
                   height: 200.h,
                   child: ClipRRect(
                     child: Image.asset('assets/squat_640_370.jpg',
-                        fit: BoxFit.fitHeight),
+                        fit: BoxFit.fitWidth),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.white,
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -492,7 +501,7 @@ class _ThirdPageState extends State<ThirdPage> {
     );
   }
   void _onTapCamera(BuildContext context) {
-    locator<ModelInferenceService>().setModelConfig(index!);
+    locator<ModelInferenceService>().setModelConfig();
 
     Navigator.pushReplacement(
       context,

@@ -26,6 +26,8 @@ class ModelCameraPreview extends StatelessWidget {
   final Map<String, dynamic>? inferenceResults =
       locator<ModelInferenceService>().inferenceResults;
 
+
+
   @override
   Widget build(BuildContext context) {
     if (cameraController == null || !cameraController!.value.isInitialized) {
@@ -39,6 +41,10 @@ class ModelCameraPreview extends StatelessWidget {
 
     final screenSize = MediaQuery.of(context).size;
     _ratio = screenSize.width / cameraController!.value.previewSize!.height;
+
+    print(inferenceResults == null ? 'inferenceresults is null' : 'inferenceresults is ${inferenceResults?.length}');
+    print('index is ${index}');
+
 
     return Stack(
       children: [
@@ -57,30 +63,6 @@ class ModelCameraPreview extends StatelessWidget {
       ],
     );
   }
-
-  /*Widget get _drawBoundingBox {
-    final bbox = inferenceResults?['bbox'];
-    return _ModelPainter(
-      customPainter: FaceDetectionPainter(
-        bbox: bbox ?? Rect.zero,
-        ratio: _ratio,
-      ),
-    );
-  }
-
-  Widget get _drawLandmarks => _ModelPainter(
-    customPainter: FaceMeshPainter(
-      points: inferenceResults?['point'] ?? [],
-      ratio: _ratio,
-    ),
-  );
-
-  Widget get _drawHands => _ModelPainter(
-    customPainter: HandsPainter(
-      points: inferenceResults?['point'] ?? [],
-      ratio: _ratio,
-    ),
-  );*/
 
   Widget get _drawLunge => _ModelPainter(
     customPainter: LungePainter(

@@ -34,6 +34,7 @@ class Pose extends AiModel {
       interpreter ??= await Interpreter.fromAsset(ModelFile.pose,
           options: interpreterOptions);
 
+
       final outputTensors = interpreter!.getOutputTensors();
 
       outputTensors.forEach((tensor) {

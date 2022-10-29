@@ -13,6 +13,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SecondPage extends StatefulWidget {
+  int time = 0;
+  int kcal = 0;
+
+  SecondPage(this.time, this.kcal);
+
+
   @override
   State<SecondPage> createState() => _SecondPageState();
 }
@@ -21,12 +27,25 @@ class _SecondPageState extends State<SecondPage> {
   final _authentication = FirebaseAuth.instance;
   User? loggedUser;
 
+  int? lasttime;
+  int? lastkcal;
+  late List<int> mylist;
+  //late Information information;
+
+  DateTime selectedDay = DateTime.utc(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+  DateTime focusedDay = DateTime.now();
+
   @override
   void initState() {
     super.initState();
-    lasttime += information.mytime!;
-    lastkcal += information.mykcal!;
     getCurrentUser();
+    print('time is ${widget.time}');
+    //Information information = new Information(0,0);
+    //print('information 생성');
   }
 
   void getCurrentUser() {
@@ -40,23 +59,16 @@ class _SecondPageState extends State<SecondPage> {
     }
   }
 
-  int lasttime = 0;
-  int lastkcal = 0;
+  void getLastdata() async {
+    mylist = await getInfor(DateTime.now());
+    lastkcal = mylist[0];
+    lasttime = mylist[1];
+    print('lastkcal is ${lastkcal}');
+  }
 
-  DateTime selectedDay = DateTime.utc(
-    DateTime.now().year,
-    DateTime.now().month,
-    DateTime.now().day,
-  );
-  DateTime focusedDay = DateTime.now();
-
-  @override
-  Widget build(BuildContext context) {
-    //final inforlast = ModalRoute.of(context)!.settings.arguments as Information;
-    /*lasttime += information.mytime!;
-    lastkcal += information.mykcal!;*/
-
-    //print('$lasttime');
+  void setLastdata() {
+      //lastkcal += widget.kcal;
+      //lasttime += widget.time;
 
     FirebaseFirestore.instance
         .collection('user')
@@ -66,6 +78,26 @@ class _SecondPageState extends State<SecondPage> {
         .set({'kcal': lastkcal, 'time': lasttime});
     print('업로드 완료');
 
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    //final inforlast = ModalRoute.of(context)!.settings.arguments as Information;
+    /*lasttime += information.mytime!;
+    lastkcal += information.mykcal!;*/
+
+    //print('$lasttime');
+
+    /*FirebaseFirestore.instance
+        .collection('user')
+        .doc(loggedUser!.uid)
+        .collection('calendar')
+        .doc(DateFormat("yyyy-MM-dd").format(DateTime.now()))
+        .set({'kcal': lastkcal, 'time': lasttime});
+    print('업로드 완료');*/
+
     /*var documentSnapshot = FirebaseFirestore.instance
         .collection('user')
         .doc(loggedUser!.uid)
@@ -73,6 +105,10 @@ class _SecondPageState extends State<SecondPage> {
         .doc(DateFormat("yyyy-MM-dd").format(DateTime.now()));
 
     documentSnapshot.get().then((value) => {print(value.data()!["kcal"])});*/
+
+    getLastdata();
+    print('흐음..');
+    setLastdata();
 
     return Scaffold(
         body: Center(
@@ -110,7 +146,9 @@ class _SecondPageState extends State<SecondPage> {
                                   SizedBox(
                                     width: 140.w,
                                     height: 30.h,
-                                    child: Text('donghan21 님', maxLines: 1),
+                                    child: Text('${FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(loggedUser!.uid).toString()} 님', maxLines: 1),
                                   ),
                                   SizedBox(
                                       width: 100.w,
@@ -235,7 +273,7 @@ class _SecondPageState extends State<SecondPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: FutureBuilder(
-                      future: getKcal(focusedDay),
+                      future: getInfor(focusedDay),
                       builder: (context, AsyncSnapshot<List<int>> snapshot) {
                         if(snapshot.hasData) {
                         return ScheduleCard(
@@ -257,7 +295,7 @@ class _SecondPageState extends State<SecondPage> {
                       child: Text('운동 시작하기',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/third');
+                        Navigator.of(context).pushReplacementNamed('/third');
                       },
                     ))
               ],
@@ -321,7 +359,7 @@ class _SecondPageState extends State<SecondPage> {
     });
   }
 
-  Future<List<int>> getKcal(DateTime date) async {
+  Future<List<int>> getInfor(DateTime date) async {
     DocumentReference userRef = FirebaseFirestore.instance
         .collection('user')
         .doc(loggedUser!.uid)
@@ -350,3 +388,10 @@ class _SecondPageState extends State<SecondPage> {
     return (result);
   }
 }
+
+/*class Information {
+  int? mytime;
+  int? mykcal;
+
+  Information(this.mytime, this.mykcal);
+}*/
