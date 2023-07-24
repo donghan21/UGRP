@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       builder: (_, child) => MaterialApp(
         title: 'app title',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.red,
         ),
         initialRoute: '/',
         routes: {
